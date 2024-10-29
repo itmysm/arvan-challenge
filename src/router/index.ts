@@ -1,6 +1,8 @@
+import { authMiddleware } from "@/middleware/authMiddleware"
 import Login from "@/pages/auth/login.vue"
 import Register from "@/pages/auth/register.vue"
 import { createRouter, createWebHistory } from 'vue-router'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,4 +18,7 @@ const router = createRouter({
   ]
 })
 
+router.beforeEach((to, from, next) => {
+  return authMiddleware(to, from, next)
+})
 export default router
