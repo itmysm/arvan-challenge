@@ -2,14 +2,18 @@
 @import 'bootstrap/scss/variables';
 @import 'bootstrap/scss/mixins';
 
-$theme-colors: ("primary": #4a90e2,
+$theme-colors: ("primary": #1c7cd5,
   "secondary": #ff4081,
   "success": #4caf50,
   "info": #2196f3,
   "warning": #ffc107,
   "danger": #f44336,
   "light": #f1f1f1,
-  "dark": #333333);
+  "dark": #333333,
+  "silver": #eceeef,
+  "gray": #707070,
+  "charcoal-grey": #373a3c,
+);
 
 $body-bg: #ffffff;
 $body-color: #333333;
