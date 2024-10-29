@@ -1,25 +1,24 @@
 <template>
   <div
     class="alert-box position-absolute d-flex justify-content-between align-items-center"
-    v-if="visible"
-    :class="`alert alert-${type} ${classes}`"
+    v-if="alertStore.visible"
+    :class="`alert alert-${alertStore.type} ${classes}`"
     role="alert"
   >
-    <span class="me-4">{{ message }}</span>
-
+    <span class="me-4">{{ alertStore.message }}</span>
     <button
       type="button"
       class="btn-close fs-6 fw-bold text-black d-flex justify-content-center"
       aria-label="Close"
-      @click="closeAlert"
+      @click="alertStore.visible = false"
     >
       <IconClose />
     </button>
   </div>
 </template>
 
-<script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+<script setup>
+import { useAlertStore } from '@/stores/alert'
 import IconClose from '@/components/icons/IconClose.vue'
 
 const props = defineProps({
@@ -41,18 +40,7 @@ const props = defineProps({
   },
 })
 
-const visible = ref(true)
-const closeAlert = () => {
-  visible.value = false
-}
-
-onMounted(() => {
-  setTimeout(() => {
-    if (visible.value) {
-      visible.value = false
-    }
-  }, 3000)
-})
+const alertStore = useAlertStore()
 </script>
 
 <style scoped>
@@ -62,7 +50,6 @@ onMounted(() => {
 .direction-right {
   right: 0;
 }
-
 .direction-left {
   left: 0;
 }
