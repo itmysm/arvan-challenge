@@ -85,8 +85,8 @@ const onHandleRegister = async () => {
   loading.register = true
 
   try {
-    Promise.all([
-      await register({ ...loginModel }),
+    await Promise.all([
+      await register({ ...registerModel }),
       await onHandleSaveSession(),
     ])
 
