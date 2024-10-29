@@ -1,6 +1,6 @@
 <template>
   <div
-    class="alert-box position-absolute d-flex justify-content-between align-items-center"
+    class="alert-box position-absolute d-flex justify-content-between align-items-center z-3"
     v-if="alertStore.visible"
     :class="`alert alert-${alertStore.type} ${classes}`"
     role="alert"
