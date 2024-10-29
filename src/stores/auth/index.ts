@@ -17,7 +17,7 @@ export const useAuthStore = defineStore('auth', {
     async login({ email, password }: { email: string, password: string }) {
       try {
         const response = await axios.post(
-          `${BASE_URL}${import.meta.env.VITE_API_LOGIN_KEY}/auth/login`,
+          `${BASE_URL}${import.meta.env.VITE_API_AUTH_KEY}/auth/login`,
           { email, password }
         )
         this.user = { email, ...response.data }
@@ -27,7 +27,18 @@ export const useAuthStore = defineStore('auth', {
         throw error
       }
     },
-
+    async register({ email, password, username }: { email: string, password: string, username: string }) {
+      try {
+        const response = await axios.post(
+          `${BASE_URL}${import.meta.env.VITE_API_AUTH_KEY}/auth/signup`,
+          { email, password, username }
+        )
+        this.user = { email, ...response.data }
+        return response
+      } catch (error) {
+        throw error
+      }
+    },
     async saveLoginSession() {
       try {
         localStorage.setItem('user', JSON.stringify(this.user))
@@ -35,6 +46,13 @@ export const useAuthStore = defineStore('auth', {
       } catch (error) {
         return Promise.reject(error)
       }
+    },
+
+    checkUserLoginSession() {
+      return JSON.stringify(localStorage.getItem('user'))
+    },
+    logout() {
+      return localStorage.removeItem('user')
     }
   },
 })
