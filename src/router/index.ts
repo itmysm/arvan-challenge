@@ -1,7 +1,7 @@
 import { authMiddleware } from "@/middleware/authMiddleware"
 import Login from "@/pages/auth/login.vue"
 import Register from "@/pages/auth/register.vue"
-import Dashboard from "@/pages/dashboard/index.vue"
+import Articles from "@/pages/dashboard/articles/index.vue"
 import { createRouter, createWebHistory } from 'vue-router'
 
 
@@ -17,8 +17,14 @@ const router = createRouter({
       component: Register
     },
     {
-      path: '/dashboard',
-      component: Dashboard
+      path: '/dashboard/articles',
+      component: Articles
+    },
+    {
+      path: '/dashboard/articles/page/:pageNumber',
+      name: 'ArticlesPage',
+      component: Articles,
+      props: true,
     }
   ]
 })
