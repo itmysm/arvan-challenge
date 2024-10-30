@@ -1,19 +1,21 @@
 <template>
   <div class="h-100 bg-primary px-3 py-3">
     <h2 class="fs-4 fw-normal text-white">Post</h2>
-    <ul class="list-group list-group-flush px-5">
-      <li v-for="(item, i) in sideBarItems" class="fs-5 fw-normal">
-        <a class="text-white link-silver text-decoration-none" :href="item.path">
-          {{ item.title }}
-        </a>
-      </li>
-    </ul>
+    <div class="list-group">
+      <RouterLink
+        v-for="(item, i) in sideBarItems"
+        :to="item.path"
+        class="list-group-item list-group-item-action bg-transparent border-0 text-silver"
+      >
+        {{ item.title }}
+      </RouterLink>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 const sideBarItems = [
-  { title: 'All Articles', path: '/all' },
-  { title: 'New Article', path: '/new' },
+  { title: 'All Articles', path: '/dashboard/articles' },
+  { title: 'New Article', path: '/dashboard/new-articles' },
 ]
 </script>

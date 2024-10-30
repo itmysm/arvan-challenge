@@ -12,7 +12,7 @@ export function authMiddleware(
 
   if (isLoggedIn) {
     if (to.fullPath.startsWith('/auth') || to.fullPath === '/') {
-      next({ path: '/dashboard' })
+      next({ path: '/dashboard/articles' })
     } else {
       next()
     }
