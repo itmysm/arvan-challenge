@@ -5,7 +5,8 @@
       <RouterLink
         v-for="(item, i) in sideBarItems"
         :to="item.path"
-        class="list-group-item list-group-item-action bg-transparent border-0 text-silver"
+        class="list-group-item bg-transparent border-0 text-silver"
+        :class="item.path.includes(useRoute().fullPath) ? 'bg-info' : ''"
       >
         {{ item.title }}
       </RouterLink>
@@ -14,6 +15,8 @@
 </template>
 
 <script lang="ts" setup>
+import { useRoute } from 'vue-router'
+
 const sideBarItems = [
   { title: 'All Articles', path: '/dashboard/articles' },
   { title: 'New Article', path: '/dashboard/new-articles' },

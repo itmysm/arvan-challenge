@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
-import type { User } from "./model"
+import type { LoginResponse, User } from "./model"
 
 interface AuthState {
   user: User | null
@@ -14,16 +14,15 @@ export const useAuthStore = defineStore('auth', {
   }),
 
   actions: {
-    async login({ email, password }: { email: string, password: string }) {
+    async login({ email, password }: { email: string, password: string }): Promise<LoginResponse> {
       try {
         const response = await axios.post(
           `${BASE_URL}${import.meta.env.VITE_API_AUTH_KEY}/auth/login`,
           { email, password }
         )
-        this.user = { email, ...response.data }
-        return response
+        this.user = response.data
+        return response.data
       } catch (error) {
-        console.error("Login error:", error)
         throw error
       }
     },
@@ -33,7 +32,7 @@ export const useAuthStore = defineStore('auth', {
           `${BASE_URL}${import.meta.env.VITE_API_AUTH_KEY}/auth/signup`,
           { email, password, username }
         )
-        this.user = { email, ...response.data }
+        this.user = response.data
         return response
       } catch (error) {
         throw error

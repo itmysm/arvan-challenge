@@ -5,7 +5,9 @@
         <RouterLink to="/" class="navbar-brand text-white"
           >Arvan Challenge</RouterLink
         >
-        <h1 class="fs-6 fw-normal mb-0 text-white">Welcome {{ 'meysam' }}</h1>
+        <h1 class="fs-6 fw-normal mb-0 text-white">
+          Welcome {{ user?.username }}
+        </h1>
       </div>
 
       <button
@@ -23,6 +25,7 @@
 import { useAlertStore } from '@/stores/alert'
 import { useAuthStore } from '@/stores/auth'
 import { RouterLink, useRouter } from 'vue-router'
+const { user } = useAuthStore()
 
 const { push } = useRouter()
 const { logout } = useAuthStore()
