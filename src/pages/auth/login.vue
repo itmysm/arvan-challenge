@@ -50,7 +50,6 @@ const onHandleLogin = async () => {
 
   try {
     Promise.all([await login({ ...loginModel }), await onHandleSaveSession()])
-
     showAlert(
       'Login was successful! Redirecting to home page',
       'success',

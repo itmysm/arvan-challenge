@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import "bootstrap/js/dist/modal.js";
-import { defineProps, defineEmits } from 'vue';
+import { defineProps } from 'vue';
 
 const props = defineProps<{
   isVisible: boolean;
