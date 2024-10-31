@@ -1,7 +1,7 @@
 export interface getArticlesResponse {
-  curPage: number,
-  nextPage: number,
-  prevPage: null,
+  curPage: number | null,
+  nextPage: number | null,
+  prevPage: number | null,
   items: Article[]
 }
 

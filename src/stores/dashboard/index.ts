@@ -12,6 +12,13 @@ export const useDashboardStore = defineStore('dashboard', {
       } catch (error) {
         throw error
       }
+    },
+    deleteArticle: async (payload: { id: number }): Promise<getArticlesResponse> => {
+      try {
+        return await axios.delete(`${BASE_URL}${import.meta.env.VITE_API_AUTH_KEY}/articles/${payload.id}`).then((response) => response.data)
+      } catch (error) {
+        throw error
+      }
     }
   },
 })
