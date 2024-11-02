@@ -22,7 +22,7 @@ const paging = ref<Record<string, number | null>>({
   curPage: 1,
   nextPage: 2,
   prevPage: 0,
-});
+})
 
 const headers = [
   { title: '#' },
@@ -31,19 +31,6 @@ const headers = [
   { title: 'Tags' },
   { title: 'Excerpt' },
   { title: 'Created' },
-]
-
-const dropdownItems: DropdownItem[] = [
-  {
-    label: 'Edit',
-    type: 'link',
-    path: '/dashboard/edit'
-  },
-  {
-    label: 'Delete',
-    type: 'action',
-    action: 'delete'
-  }
 ]
 
 const onGetArticles = (page: string) => {
@@ -76,17 +63,19 @@ const onHandleDelete = () => {
   if (articleToDelete.value) {
     loading.value.delete = true
 
-    deleteArticle({ id: articleToDelete.value }).then(() => {
-      articles.value = articles.value?.filter((article) => article.id !== articleToDelete.value) || null
-      articleToDelete.value = null
-      showAlert(
-        'Well done! Article deleted successful',
-        'success',
-      )
-    }).finally(() => {
-      loading.value.delete = false
-      showDeleteDialog.value = false
-    })
+    deleteArticle({ id: articleToDelete.value })
+      .then(() => {
+        articles.value =
+          articles.value?.filter(
+            article => article.id !== articleToDelete.value,
+          ) || null
+        articleToDelete.value = null
+        showAlert('Well done! Article deleted successful', 'success')
+      })
+      .finally(() => {
+        loading.value.delete = false
+        showDeleteDialog.value = false
+      })
   }
 }
 
@@ -109,7 +98,11 @@ onMounted(() => {
       <table class="table">
         <thead>
           <tr>
-            <th v-for="(header, headerIndex) in headers" :key="`header_${headerIndex}`" scope="col">
+            <th
+              v-for="(header, headerIndex) in headers"
+              :key="`header_${headerIndex}`"
+              scope="col"
+            >
               {{ header.title }}
             </th>
           </tr>
@@ -123,13 +116,32 @@ onMounted(() => {
             <td>{{ article.excerpt }}</td>
             <td>{{ convertDate(article.created_at) }}</td>
             <td>
-              <Dropdown :menu-items="dropdownItems"
-                @handleAction="(actionType: string) => handleDropdownAction(actionType, article.id)" />
+              <Dropdown
+                :menu-items="[
+                  {
+                    label: 'Edit',
+                    type: 'link',
+                    path: '/dashboard/articles/edit/' + article.id,
+                  },
+                  {
+                    label: 'Delete',
+                    type: 'action',
+                    action: 'delete',
+                  },
+                ]"
+                @handleAction="
+                  (actionType: string) =>
+                    handleDropdownAction(actionType, article.id)
+                "
+              />
             </td>
           </tr>
         </tbody>
         <tbody v-else-if="articles === null">
-          <tr v-for="placeholderIndex in 6" :key="`placeholder_${placeholderIndex}`">
+          <tr
+            v-for="placeholderIndex in 6"
+            :key="`placeholder_${placeholderIndex}`"
+          >
             <td v-for="rowIndex in headers.length" :key="`row_${rowIndex}`">
               <h5 class="placeholder-glow">
                 <span class="placeholder col-4"></span>
@@ -141,22 +153,36 @@ onMounted(() => {
       </table>
     </div>
 
-    <Modal title="Delete Article" message="Are you sure to delete Article?" cancel-text="No" confirm-text="Yes"
-      :is-visible="showDeleteDialog" :loading="loading.delete" @confirm="onHandleDelete" />
+    <Modal
+      title="Delete Article"
+      message="Are you sure to delete Article?"
+      cancel-text="No"
+      confirm-text="Yes"
+      :is-visible="showDeleteDialog"
+      :loading="loading.delete"
+      @confirm="onHandleDelete"
+    />
 
-    <div class="d-flex justify-content-center">
+    <div
+      v-if="paging.prevPage && paging.nextPage"
+      class="d-flex justify-content-center"
+    >
       <nav>
         <ul class="pagination">
-
           <li class="page-item" :class="paging.prevPage ? '' : 'disabled'">
             <RouterLink
               :to="`/dashboard/articles${paging.prevPage && paging.prevPage > 1 ? '/page/' + paging.prevPage : ''}`"
-              class="page-link" tabindex="-1">Prev
+              class="page-link"
+              tabindex="-1"
+              >Prev
             </RouterLink>
           </li>
           <li class="page-item" :class="paging.nextPage ? '' : 'disabled'">
-            <RouterLink :to="`/dashboard/articles${paging.nextPage ? '/page/' + paging.nextPage : ''}`"
-              class="page-link" tabindex="-1">Next
+            <RouterLink
+              :to="`/dashboard/articles${paging.nextPage ? '/page/' + paging.nextPage : ''}`"
+              class="page-link"
+              tabindex="-1"
+              >Next
             </RouterLink>
           </li>
         </ul>

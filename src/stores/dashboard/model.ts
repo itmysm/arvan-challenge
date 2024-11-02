@@ -15,9 +15,10 @@ export interface Tag {
 
 export interface Article {
   id: number
-  title: string
-  author: string
-  tags: string[]
-  excerpt: string
-  created_at: number
+  title: string,
+  author: string,
+  tags: string[],
+  body: string,
+  excerpt: string,
+  created_at: number,
 }

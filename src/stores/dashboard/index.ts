@@ -13,6 +13,13 @@ export const useDashboardStore = defineStore('dashboard', {
         throw error
       }
     },
+    getArticle: async (payload: { articleId: string }): Promise<Article> => {
+      try {
+        return await axios.get(`${BASE_URL}/articles/${payload.articleId}`).then((response) => response.data)
+      } catch (error) {
+        throw error
+      }
+    },
     deleteArticle: async (payload: { id: number }): Promise<getArticlesResponse> => {
       try {
         return await axios.delete(`${BASE_URL}/articles/${payload.id}`).then((response) => response.data)
@@ -23,6 +30,13 @@ export const useDashboardStore = defineStore('dashboard', {
     addArticle: async (payload: { title: string, tags: string[], excerpt: string, author: string }): Promise<Article> => {
       try {
         return await axios.post(`${BASE_URL}/articles`, payload).then((response) => response.data)
+      } catch (error) {
+        throw error
+      }
+    },
+    updateArticle: async (payload: { articles_id: number, title: string, tags: string[], excerpt: string, author: string }): Promise<Article> => {
+      try {
+        return await axios.patch(`${BASE_URL}/articles/${payload.articles_id}`, payload).then((response) => response.data)
       } catch (error) {
         throw error
       }
