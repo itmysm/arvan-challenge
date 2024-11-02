@@ -19,6 +19,6 @@ import { useRoute } from 'vue-router'
 
 const sideBarItems = [
   { title: 'All Articles', path: '/dashboard/articles' },
-  { title: 'New Article', path: '/dashboard/new-articles' },
+  { title: 'New Article', path: '/dashboard/articles/create' },
 ]
 </script>
