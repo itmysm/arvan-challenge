@@ -17,7 +17,7 @@ export const useAuthStore = defineStore('auth', {
     async login({ email, password }: { email: string, password: string }): Promise<LoginResponse> {
       try {
         const response = await axios.post(
-          `${BASE_URL}${import.meta.env.VITE_API_AUTH_KEY}/auth/login`,
+          `${BASE_URL}/auth/login`,
           { email, password }
         )
         this.user = response.data
@@ -29,7 +29,7 @@ export const useAuthStore = defineStore('auth', {
     async register({ email, password, username }: { email: string, password: string, username: string }) {
       try {
         const response = await axios.post(
-          `${BASE_URL}${import.meta.env.VITE_API_AUTH_KEY}/auth/signup`,
+          `${BASE_URL}/auth/signup`,
           { email, password, username }
         )
         this.user = response.data

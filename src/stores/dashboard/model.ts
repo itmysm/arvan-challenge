@@ -5,6 +5,14 @@ export interface getArticlesResponse {
   items: Article[]
 }
 
+export type getTagsResponse = Tag[]
+
+export interface Tag {
+  id: number,
+  created_at: number,
+  title: string,
+}
+
 export interface Article {
   id: number
   title: string
