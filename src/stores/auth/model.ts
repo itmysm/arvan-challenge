@@ -16,3 +16,7 @@ export interface LoginPayload {
   email: string | null,
   password: string | null
 }
+
+export interface CheckServerStatus {
+  isAccessible: boolean
+}

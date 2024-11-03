@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
-import type { LoginPayload, LoginResponse, RegisterPayload, User } from "./model"
+import type { CheckServerStatus, LoginPayload, LoginResponse, RegisterPayload, User } from "./model"
 
 interface AuthState {
   user: User | null
@@ -52,6 +52,17 @@ export const useAuthStore = defineStore('auth', {
     },
     logout() {
       return localStorage.removeItem('user')
-    }
+    },
+    async checkServerStatus(): Promise<CheckServerStatus> {
+      try {
+        const response = await axios.get(
+          `${BASE_URL}/status`,
+          { timeout: 5000 }
+        )
+        return response.data
+      } catch (error) {
+        throw error
+      }
+    },
   },
 })
