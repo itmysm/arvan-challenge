@@ -15,7 +15,6 @@ const emits = defineEmits(['confirm', 'close'])
 
 const handleConfirm = async () => {
   await emits('confirm')
-  handleClose()
 }
 
 const handleClose = () => {
