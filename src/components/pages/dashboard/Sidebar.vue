@@ -3,7 +3,8 @@
     <h2 class="fs-4 fw-normal text-white">Post</h2>
     <div class="list-group">
       <RouterLink
-        v-for="(item, i) in sideBarItems"
+        v-for="(item, itemIndex) in sideBarItems"
+        :key="itemIndex"
         :to="item.path"
         class="list-group-item bg-transparent border-0 text-silver"
         :class="item.path.includes(useRoute().fullPath) ? 'bg-info' : ''"

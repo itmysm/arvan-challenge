@@ -3,5 +3,5 @@ export interface User {
 }
 
 export interface LoginResponse {
-  email: string
+  username: string
 }

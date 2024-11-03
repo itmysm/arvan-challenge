@@ -5,11 +5,9 @@ import DashboardLayout from '@/layouts/dashboardLayout.vue'
 import { useAlertStore } from '@/stores/alert'
 import { useDashboardStore } from '@/stores/dashboard'
 import type { Article } from '@/stores/dashboard/model'
-import type { DropdownItem } from '@/types/bootstrap'
 import { convertDate } from '@/utils/convertDate'
 import { onBeforeUpdate, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-
 const { getArticles } = useDashboardStore()
 const articles = ref<Article[] | null>(null)
 const { deleteArticle } = useDashboardStore()
