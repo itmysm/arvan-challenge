@@ -63,7 +63,7 @@ const onHandleSaveSession = async () => {
 <template>
   <AuthCardWrapper :is-login="false">
     <form @submit.prevent="onHandleRegister">
-      <div class="mb-3 mt-5">
+      <div class="mb-3 mt-2 mt-md-5">
         <label for="user" class="form-label text-charcoal-grey fw-semibold"
           >User</label
         >

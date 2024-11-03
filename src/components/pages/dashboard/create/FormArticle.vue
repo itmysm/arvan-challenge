@@ -134,22 +134,15 @@ const onSubmitArticle = () => {
       .finally(() => (loading.value.submit = false))
   }
 }
-
-const onResetForm = () => {
-  articleModel.value = {
-    ...articleModel.value,
-    id: 0,
-    title: '',
-    description: '',
-    body: '',
-  }
-}
 </script>
 
 <template>
-  <form @submit.prevent="onSubmitArticle">
+  <form
+    class="flex d-flex flex-column justify-content-center align-items-center"
+    @submit.prevent="onSubmitArticle"
+  >
     <div class="w-100 row">
-      <div class="col-8">
+      <div class="col-12 col-md-8">
         <div class="mb-3">
           <label for="title" class="form-label fw-semibold text-charcoal-grey"
             >Title</label
@@ -194,7 +187,7 @@ const onResetForm = () => {
         </div>
       </div>
 
-      <div class="mb-3 col-4">
+      <div class="mb-3 col-12 col-md-4">
         <div class="w-100">
           <label for="newTag" class="form-label fw-semibold text-charcoal-grey"
             >Tags</label
@@ -244,10 +237,10 @@ const onResetForm = () => {
       </div>
     </div>
 
-    <div class="d-flex">
+    <div class="w-100 d-flex justify-content-start">
       <button
         type="submit"
-        class="btn btn-primary fw-light text-white mt-3 px-4 py-2"
+        class="action-button btn btn-primary fw-light text-white mt-3 px-4 py-2"
         :disabled="!isFormValid || loading.submit"
       >
         <div
@@ -267,5 +260,11 @@ const onResetForm = () => {
 .container {
   max-width: 600px;
   margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .action-button {
+    width: 100%;
+  }
 }
 </style>

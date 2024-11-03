@@ -6,6 +6,7 @@ import { useAlertStore } from '@/stores/alert'
 import { useDashboardStore } from '@/stores/dashboard'
 import type { Article } from '@/stores/dashboard/model'
 import { convertDate } from '@/utils/convertDate'
+import { shortenText } from '@/utils/shortenText'
 import { onBeforeUpdate, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 const { getArticles } = useDashboardStore()
@@ -90,66 +91,70 @@ onMounted(() => {
 
 <template>
   <DashboardLayout>
-    <div class="px-5 py-4">
+    <div class="px-3 px-md-5 py-4 overflow-hidden">
       <h1 class="fs-2 mb-3">All Posts</h1>
 
-      <table class="table bg-silver">
-        <thead>
-          <tr>
-            <th
-              class="bg-silver"
-              v-for="(header, headerIndex) in headers"
-              :key="`header_${headerIndex}`"
-              scope="col"
+      <div class="table_parent overflow-auto">
+        <table class="table bg-silver">
+          <thead>
+            <tr>
+              <th
+                class="bg-silver"
+                v-for="(header, headerIndex) in headers"
+                :key="`header_${headerIndex}`"
+                scope="col"
+              >
+                {{ header.title }}
+              </th>
+            </tr>
+          </thead>
+          <tbody v-if="articles && articles.length">
+            <tr v-for="(article, index) in articles" :key="index">
+              <th scope="row">{{ article.id }}</th>
+              <td>{{ shortenText(article.title, 12) || '-' }}</td>
+              <td>{{ article.author || '-' }}</td>
+              <td>{{ shortenText(article.tags.join(','), 20) || '-' }}</td>
+              <td>{{ shortenText(article.excerpt, 20) || '-' }}</td>
+              <td>{{ convertDate(article.created_at) || '-' }}</td>
+              <td>
+                <Dropdown
+                  :menu-items="[
+                    {
+                      label: 'Edit',
+                      type: 'link',
+                      path: '/dashboard/articles/edit/' + article.id,
+                    },
+                    {
+                      label: 'Delete',
+                      type: 'action',
+                      action: 'delete',
+                    },
+                  ]"
+                  @handleAction="
+                    (actionType: string) =>
+                      handleDropdownAction(actionType, article.id)
+                  "
+                  variant="info"
+                  dropdown-type="dropdown"
+                />
+              </td>
+            </tr>
+          </tbody>
+          <tbody v-else-if="articles === null">
+            <tr
+              v-for="placeholderIndex in 6"
+              :key="`placeholder_${placeholderIndex}`"
             >
-              {{ header.title }}
-            </th>
-          </tr>
-        </thead>
-        <tbody v-if="articles && articles.length">
-          <tr v-for="(article, index) in articles" :key="index">
-            <th scope="row">{{ article.id }}</th>
-            <td>{{ article.title || '-' }}</td>
-            <td>{{ article.author || '-' }}</td>
-            <td>{{ article.tags.join(',') || '-' }}</td>
-            <td>{{ article.excerpt || '-' }}</td>
-            <td>{{ convertDate(article.created_at) || '-' }}</td>
-            <td>
-              <Dropdown
-                :menu-items="[
-                  {
-                    label: 'Edit',
-                    type: 'link',
-                    path: '/dashboard/articles/edit/' + article.id,
-                  },
-                  {
-                    label: 'Delete',
-                    type: 'action',
-                    action: 'delete',
-                  },
-                ]"
-                @handleAction="
-                  (actionType: string) =>
-                    handleDropdownAction(actionType, article.id)
-                "
-              />
-            </td>
-          </tr>
-        </tbody>
-        <tbody v-else-if="articles === null">
-          <tr
-            v-for="placeholderIndex in 6"
-            :key="`placeholder_${placeholderIndex}`"
-          >
-            <td v-for="rowIndex in headers.length" :key="`row_${rowIndex}`">
-              <h5 class="placeholder-glow">
-                <span class="placeholder col-4"></span>
-              </h5>
-            </td>
-          </tr>
-        </tbody>
-        <p v-else>No Record Found</p>
-      </table>
+              <td v-for="rowIndex in headers.length" :key="`row_${rowIndex}`">
+                <h5 class="placeholder-glow">
+                  <span class="w-100 placeholder col-4"></span>
+                </h5>
+              </td>
+            </tr>
+          </tbody>
+          <p v-else>No Record Found</p>
+        </table>
+      </div>
     </div>
 
     <Modal
@@ -160,6 +165,7 @@ onMounted(() => {
       :is-visible="showDeleteDialog"
       :loading="loading.delete"
       @confirm="onHandleDelete"
+      @close="showDeleteDialog = false"
     />
 
     <div
@@ -189,3 +195,11 @@ onMounted(() => {
     </div>
   </DashboardLayout>
 </template>
+
+<style>
+@media (max-width: 768px) {
+  .table_parent {
+    max-height: 70vh;
+  }
+}
+</style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex justify-content-center align-items-center min-vh-100">
+  <div class="d-flex justify-content-center align-items-center min-vh-100 p-4 p-md-0">
     <div class="card px-4 pt-4 login-card bg-silver shadow-sm border-none">
       <h2 class="fs-1 text-center text-gray">
         {{ isLogin ? 'LOGIN' : 'Register' }}
