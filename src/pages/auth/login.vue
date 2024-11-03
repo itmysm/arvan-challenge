@@ -19,13 +19,17 @@
         >
         <input
           type="password"
-          class="form-control is-invalid"
-          id="password"
+          class="form-control"
           v-model="loginModel.password"
           required
+          :class="{ 'is-invalid': !isPasswordValid }"
         />
-        <div v-show="!loginModel.password" class="invalid-feedback">
-          Required field
+        <div class="invalid-feedback">
+          {{
+            loginModel.password
+              ? 'Password must be at least 8 characters long and contain both letters and numbers'
+              : 'Password is required.'
+          }}
         </div>
       </div>
       <button
@@ -46,11 +50,12 @@
 </template>
 
 <script setup>
-import { reactive, computed, ref } from 'vue'
+import { reactive, computed } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useAlertStore } from '@/stores/alert'
 import { useRouter } from 'vue-router'
 import AuthCardWrapper from '@/components/pages/auth/AuthCardWrapper.vue'
+import { validateEmail } from '@/utils/validation'
 
 const { showAlert } = useAlertStore()
 const { push } = useRouter()
@@ -61,12 +66,14 @@ const loginModel = reactive({
   password: null,
 })
 
-const loading = reactive({
-  login: false,
-})
+const isEmailValid = computed(() => validateEmail(loginModel.email))
+const isPasswordValid = computed(() => loginModel.password)
 
 const isFormValid = computed(() => {
-  return loginModel.email && loginModel.password
+  return isEmailValid.value && isPasswordValid.value
+})
+const loading = reactive({
+  login: false,
 })
 
 const onHandleLogin = async () => {
@@ -79,7 +86,12 @@ const onHandleLogin = async () => {
     push('/')
   } catch (error) {
     const errorMessages = error.response?.data?.message
-    showAlert(errorMessages || 'Can not reach the server', 'danger')
+
+    if (error.status === 403) {
+      showAlert('Login Failed!  Email and/or Password is invalid', 'danger')
+    } else {
+      showAlert(errorMessages || 'Can not reach the server', 'danger')
+    }
   } finally {
     loading.login = false
   }
