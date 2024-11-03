@@ -95,10 +95,11 @@ onMounted(() => {
     <div class="px-5 py-4">
       <h1 class="fs-2 mb-3">All Posts</h1>
 
-      <table class="table">
+      <table class="table bg-silver">
         <thead>
           <tr>
             <th
+              class="bg-silver"
               v-for="(header, headerIndex) in headers"
               :key="`header_${headerIndex}`"
               scope="col"
@@ -110,11 +111,11 @@ onMounted(() => {
         <tbody v-if="articles && articles.length">
           <tr v-for="(article, index) in articles" :key="index">
             <th scope="row">{{ article.id }}</th>
-            <td>{{ article.title }}</td>
-            <td>{{ article.author }}</td>
-            <td>{{ article.tags.join(',') }}</td>
-            <td>{{ article.excerpt }}</td>
-            <td>{{ convertDate(article.created_at) }}</td>
+            <td>{{ article.title || '-' }}</td>
+            <td>{{ article.author || '-' }}</td>
+            <td>{{ article.tags.join(',') || '-' }}</td>
+            <td>{{ article.excerpt || '-' }}</td>
+            <td>{{ convertDate(article.created_at) || '-' }}</td>
             <td>
               <Dropdown
                 :menu-items="[
@@ -164,7 +165,7 @@ onMounted(() => {
     />
 
     <div
-      v-if="paging.prevPage && paging.nextPage"
+      v-if="paging.prevPage || paging.nextPage"
       class="d-flex justify-content-center"
     >
       <nav>

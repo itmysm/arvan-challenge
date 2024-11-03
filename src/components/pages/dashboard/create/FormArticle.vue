@@ -3,11 +3,13 @@ import { computed, ref, onMounted } from 'vue'
 import { useAlertStore } from '@/stores/alert'
 import { useDashboardStore } from '@/stores/dashboard'
 import type { Article, Tag } from '@/stores/dashboard/model'
+import { useRouter } from 'vue-router'
 
 interface ExtendedTag extends Tag {
   checked: boolean
 }
 
+const { push } = useRouter()
 const props = defineProps<{
   initialArticleModel?: Article
   isEditMode?: boolean
@@ -17,7 +19,6 @@ const { addArticle, getTagsList, addTagItem, updateArticle } =
   useDashboardStore()
 const { showAlert } = useAlertStore()
 
-const articleForm = ref()
 const articleModel = ref({
   id: 0,
   title: '',
@@ -54,6 +55,8 @@ const addTag = () => {
 const onGetTagList = async () => {
   loading.value.tags = true
   const tags = await getTagsList()
+  tags.sort((a, b) => a.title.localeCompare(b.title))
+
   tagList.value = tags.map(tag => ({
     ...tag,
     checked: articleModel.value.selectedTags.includes(tag.title),
@@ -98,6 +101,7 @@ const updateSelectedTags = (tag: ExtendedTag) => {
 
 const onSubmitArticle = () => {
   loading.value.submit = true
+
   const articleData = {
     articles_id: articleModel.value.id,
     title: articleModel.value.title,
@@ -110,7 +114,7 @@ const onSubmitArticle = () => {
     updateArticle(articleData)
       .then(() => {
         showAlert('Well done! Article updated successfully', 'success')
-        onResetForm()
+        push('/dashboard/articles')
       })
       .catch(error => {
         const errorMessages = error.response?.data?.message
@@ -121,7 +125,7 @@ const onSubmitArticle = () => {
     addArticle(articleData)
       .then(() => {
         showAlert('Well done! Article created successfully', 'success')
-        onResetForm()
+        push('/dashboard/articles')
       })
       .catch(error => {
         const errorMessages = error.response?.data?.message
@@ -133,17 +137,17 @@ const onSubmitArticle = () => {
 
 const onResetForm = () => {
   articleModel.value = {
+    ...articleModel.value,
     id: 0,
     title: '',
     description: '',
     body: '',
-    selectedTags: [],
   }
 }
 </script>
 
 <template>
-  <form @submit.prevent="onSubmitArticle" ref="articleForm">
+  <form @submit.prevent="onSubmitArticle">
     <div class="w-100 row">
       <div class="col-8">
         <div class="mb-3">

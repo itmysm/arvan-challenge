@@ -6,7 +6,8 @@
           >Arvan Challenge</RouterLink
         >
         <h1 class="fs-6 fw-normal mb-0 text-white">
-          Welcome {{ user?.username }}
+          Welcome
+          <span class="fs-5 fw-bold">{{ user?.username }}</span>
         </h1>
       </div>
 
@@ -33,7 +34,7 @@ const { showAlert } = useAlertStore()
 
 const onHandleLogout = () => {
   logout()
-  showAlert('you have successfully logged out', 'info')
+  showAlert('You have successfully logged out', 'info')
   push('/auth/login')
 }
 </script>
