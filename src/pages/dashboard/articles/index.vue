@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Dropdown from '@/components/UI/Dropdown.vue'
-import Modal from '@/components/UI/Modal.vue'
+import Dropdown from '@/components/ui/Dropdown.vue'
+import Modal from '@/components/ui/Modal.vue'
 import DashboardLayout from '@/layouts/dashboardLayout.vue'
 import { useAlertStore } from '@/stores/alert'
 import { useDashboardStore } from '@/stores/dashboard'

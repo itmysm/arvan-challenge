@@ -1,23 +1,4 @@
-<template>
-  <div
-    class="alert-box position-absolute d-flex justify-content-between align-items-center z-3"
-    v-if="alertStore.visible"
-    :class="`alert alert-${alertStore.type} ${classes}`"
-    role="alert"
-  >
-    <span class="me-4">{{ alertStore.message }}</span>
-    <button
-      type="button"
-      class="btn-close fs-6 fw-bold text-black d-flex justify-content-center"
-      aria-label="Close"
-      @click="alertStore.visible = false"
-    >
-      <IconClose />
-    </button>
-  </div>
-</template>
-
-<script setup>
+<script lang="ts" setup>
 import { useAlertStore } from '@/stores/alert'
 import IconClose from '@/components/icons/IconClose.vue'
 
@@ -42,6 +23,25 @@ const props = defineProps({
 
 const alertStore = useAlertStore()
 </script>
+
+<template>
+  <div
+    class="alert-box position-absolute d-flex justify-content-between align-items-center z-3"
+    v-if="alertStore.visible"
+    :class="`alert alert-${alertStore.type} ${classes}`"
+    role="alert"
+  >
+    <span class="me-4">{{ alertStore.message }}</span>
+    <button
+      type="button"
+      class="btn-close fs-6 fw-bold text-black d-flex justify-content-center"
+      aria-label="Close"
+      @click="alertStore.visible = false"
+    >
+      <IconClose />
+    </button>
+  </div>
+</template>
 
 <style scoped>
 .alert-box {

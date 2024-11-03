@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
-import type { LoginResponse, User } from "./model"
+import type { LoginPayload, LoginResponse, RegisterPayload, User } from "./model"
 
 interface AuthState {
   user: User | null
@@ -14,7 +14,7 @@ export const useAuthStore = defineStore('auth', {
   }),
 
   actions: {
-    async login({ email, password }: { email: string, password: string }): Promise<LoginResponse> {
+    async login({ email, password }: LoginPayload): Promise<LoginResponse> {
       try {
         const response = await axios.post(
           `${BASE_URL}/auth/login`,
@@ -26,7 +26,7 @@ export const useAuthStore = defineStore('auth', {
         throw error
       }
     },
-    async register({ email, password, username }: { email: string, password: string, username: string }) {
+    async register({ email, password, username }: RegisterPayload) {
       try {
         const response = await axios.post(
           `${BASE_URL}/auth/signup`,

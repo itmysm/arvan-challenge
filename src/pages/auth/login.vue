@@ -1,3 +1,58 @@
+
+<script setup lang="ts">
+import { reactive, computed } from 'vue'
+import { useAuthStore } from '@/stores/auth'
+import { useAlertStore } from '@/stores/alert'
+import { useRouter } from 'vue-router'
+import AuthCardWrapper from '@/components/pages/auth/AuthCardWrapper.vue'
+import { validateEmail } from '@/utils/validation'
+
+const { showAlert } = useAlertStore()
+const { push } = useRouter()
+const { login, saveLoginSession } = useAuthStore()
+
+const loginModel = reactive({
+  email: null,
+  password: null,
+})
+
+const isEmailValid = computed(() => validateEmail(loginModel.email))
+const isPasswordValid = computed(() => loginModel.password)
+
+const isFormValid = computed(() => {
+  return isEmailValid.value && isPasswordValid.value
+})
+const loading = reactive({
+  login: false,
+})
+
+const onHandleLogin = async () => {
+  if (!isFormValid.value) return
+  loading.login = true
+
+  try {
+    Promise.all([await login({ ...loginModel }), await onHandleSaveSession()])
+    showAlert('Login was successful! Redirecting to home page', 'success')
+    push('/')
+  } catch (error: any) {
+    const errorMessages = error.response?.data?.message
+
+    if (error.status === 403) {
+      showAlert('Login Failed!  Email and/or Password is invalid', 'danger')
+    } else {
+      showAlert(errorMessages || 'Can not reach the server', 'danger')
+    }
+  } finally {
+    loading.login = false
+  }
+}
+
+const onHandleSaveSession = async () => {
+  await saveLoginSession()
+}
+</script>
+
+
 <template>
   <AuthCardWrapper :is-login="true">
     <form>
@@ -48,56 +103,3 @@
     </form>
   </AuthCardWrapper>
 </template>
-
-<script setup>
-import { reactive, computed } from 'vue'
-import { useAuthStore } from '@/stores/auth'
-import { useAlertStore } from '@/stores/alert'
-import { useRouter } from 'vue-router'
-import AuthCardWrapper from '@/components/pages/auth/AuthCardWrapper.vue'
-import { validateEmail } from '@/utils/validation'
-
-const { showAlert } = useAlertStore()
-const { push } = useRouter()
-const { login, saveLoginSession } = useAuthStore()
-
-const loginModel = reactive({
-  email: null,
-  password: null,
-})
-
-const isEmailValid = computed(() => validateEmail(loginModel.email))
-const isPasswordValid = computed(() => loginModel.password)
-
-const isFormValid = computed(() => {
-  return isEmailValid.value && isPasswordValid.value
-})
-const loading = reactive({
-  login: false,
-})
-
-const onHandleLogin = async () => {
-  if (!isFormValid.value) return
-  loading.login = true
-
-  try {
-    Promise.all([await login({ ...loginModel }), await onHandleSaveSession()])
-    showAlert('Login was successful! Redirecting to home page', 'success')
-    push('/')
-  } catch (error) {
-    const errorMessages = error.response?.data?.message
-
-    if (error.status === 403) {
-      showAlert('Login Failed!  Email and/or Password is invalid', 'danger')
-    } else {
-      showAlert(errorMessages || 'Can not reach the server', 'danger')
-    }
-  } finally {
-    loading.login = false
-  }
-}
-
-const onHandleSaveSession = async () => {
-  await saveLoginSession()
-}
-</script>

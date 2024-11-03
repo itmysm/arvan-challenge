@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { reactive, computed } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useAlertStore } from '@/stores/alert'
@@ -47,7 +47,7 @@ const onHandleRegister = async () => {
       'success',
     )
     push('/')
-  } catch (error) {
+  } catch (error: any) {
     const errorMessages = error.response?.data?.message
     alertStore.showAlert(errorMessages || 'Cannot reach the server', 'danger')
   } finally {

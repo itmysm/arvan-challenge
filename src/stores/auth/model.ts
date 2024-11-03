@@ -5,3 +5,14 @@ export interface User {
 export interface LoginResponse {
   username: string
 }
+
+export interface RegisterPayload {
+  email: string | null,
+  password: string | null,
+  username: string | null
+}
+
+export interface LoginPayload {
+  email: string | null,
+  password: string | null
+}
